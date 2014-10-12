@@ -10,7 +10,7 @@ Requirements: node >= v0.10.26
 
 From slack account setting, create an Incoming WebHooks:
 - choose a channel where sending Spotify message
-- edit variable "incomingWebHook" with generated "Your Unique Webhook URL"
+- copy "config/default.json.dist" in "config/default.json" and edit "incomingWebHook" with generated "Your Unique Webhook URL"
 
 From slack account setting, create a Slash Commands with:
 - Command: /spotify
