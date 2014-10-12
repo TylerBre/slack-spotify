@@ -1,0 +1,5 @@
+{
+    "Slack": {
+        "incomingWebHook": "#######your unique incoming web hook#######"
+    }
+}

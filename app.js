@@ -1,23 +1,36 @@
-var incomingWebHook = "..."; //insert your Your Unique Webhook URL
 var express = require('express');
-var app = express();
-
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-var xhr = new XMLHttpRequest();
-
 var bodyParser = require('body-parser');
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
+var spotifyRequest = new XMLHttpRequest();
+
+var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 
+var fetchAlbums = function (responseText) {
+    return JSON.parse(responseText);
+};
+
 app.post('/ideato/spotify', function (req, res) {
 
-    xhr.onreadystatechange = function () {
-        if (this.readyState == 4) {
-            var albums = JSON.parse(this.responseText),
-                albumsLength = albums.albums.items.length,
-                index = 0;
+    var isResponseOk = function (readyState) {
+        return readyState == 4;
+    };
 
-            if (albums.albums.items.length === 0) {
+    var albumsFound = function (albumsLength) {
+        return albumsLength !== 0;
+    };
+
+    spotifyRequest.onreadystatechange = function () {
+        if (isResponseOk(this.readyState)) {
+            var djSelector = require('./djSelector'),
+                musicSender = require('./musicSender'),
+                albums = fetchAlbums(this.responseText),
+                albumsLength = albums.albums.items.length,
+                album = {};
+
+            if (! albumsFound(albumsLength)) {
                 res.json(
                     {
                         text: 'Artist not Found'
@@ -26,30 +39,15 @@ app.post('/ideato/spotify', function (req, res) {
                 return;
             }
 
-            if(albumsLength > 1){
-                index = Math.floor((Math.random() * albumsLength) + 1);
-            }
+            album = djSelector.select(albums);
 
-            console.log('Sending response:' + albums.albums.items[index].external_urls.spotify);
-            var text = 'Listen: ' + albums.albums.items[index].external_urls.spotify + ' Name: '
-                + albums.albums.items[index].name + ' - ' + albums.albums.items[index].images[0].url;
-            var params = '{"text":"' + text + '"}';
-            var http = new XMLHttpRequest();
-            http.open("POST", incomingWebHook, true);
-            http.onreadystatechange = function () {
-                if (http.readyState == 4) {
-                    res.send('Have fun!!');
-                }
-            }
-            http.send(params);
+            musicSender.send(album, res);
         }
-
     };
 
     console.log('GET: ' + "https://api.spotify.com/v1/search?q=" + req.body.text + "&type=album");
-    xhr.open("GET", "https://api.spotify.com/v1/search?q=" + req.body.text + "&type=album");
-    xhr.send();
-
+    spotifyRequest.open("GET", "https://api.spotify.com/v1/search?q=" + req.body.text + "&type=album");
+    spotifyRequest.send();
 });
 
 var server = app.listen(3001, function () {
