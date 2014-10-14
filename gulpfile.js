@@ -20,7 +20,6 @@ gulp.task('npm:start', plugins.shell.task(['npm start']));
 gulp.task('build', function () {
     runSequence(
         ['jshint', 'tests'],
-        'npm:install',
         'npm:start'
     );
 });
