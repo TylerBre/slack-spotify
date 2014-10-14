@@ -6,11 +6,13 @@ Slack-Spotify integration
 usage
 =====
 
-Requirements: node >= v0.10.26
+Requirements:
+- node >= v0.10.26
+- gulp >= 3.8.8
+- nodemon >= v1.2.1
 
-From slack account setting, create an Incoming WebHooks:
+From slack account setting, create an Incoming WebHooks and:
 - choose a channel where sending Spotify message
-- copy "config/default.json.dist" in "config/default.json" and edit "incomingWebHook" with generated "Your Unique Webhook URL"
 
 From slack account setting, create a Slash Commands with:
 - Command: /spotify
@@ -18,8 +20,9 @@ From slack account setting, create a Slash Commands with:
 - Method: POST
 
 Clone repo and:
+- copy and paste "config/default.json.dist" in "config/default.json" and edit "incomingWebHook" with generated "Your Unique Webhook URL"
 - run "npm install"
-- run "node app.js"
+- run "gulp build"
 
 From slack application run command "/spotify [artist name]" and you will receive the open Spotify url of a random album of selected artist.
 
