@@ -3,7 +3,7 @@ var should = require("should");
 describe('dj selector', function () {
 
     it('should return "HotDreams" when "albums" contains only this one', function () {
-        var djSelector = require('djSelector'),
+        var djSelector = require('modules/djSelector'),
             albums = {},
             album = {};
 
@@ -47,7 +47,7 @@ describe('dj selector', function () {
     });
 
     it('should return a "TimberTimbre" album when "albums" contains two album', function () {
-        var djSelector = require('djSelector'),
+        var djSelector = require('modules/djSelector'),
             albums = {},
             album = {};
 
