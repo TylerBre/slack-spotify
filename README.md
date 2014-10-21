@@ -24,6 +24,7 @@ Clone repo and:
 - run "npm install"
 - run "gulp build"
 
-From slack application run command "/spotify [artist name]" and you will receive the open Spotify url of a random album of selected artist.
+From slack application run command "/spotify [artist name]" and you will receive a random album of selected artist.
+You can also run command "/spotify [album:album name artist:artist name]" to receive selected album.
 
 Share music with your colleagues and have fun.
