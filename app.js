@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 /*==========  app vars  ==========*/
 
-app.set('port', 3001);
+app.set('port', process.env.PORT || 3001);
 
 /*==========  routes  ==========*/
 
