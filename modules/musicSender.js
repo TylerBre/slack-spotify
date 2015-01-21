@@ -1,30 +1,19 @@
-module.exports = function () {
-    var spotifyRequest = require('request');
-    var config = require('config');
+var request = require('request-promise');
+var config = require('config');
 
-    var send = function (album, res) {
-        var incomingWebHook = {
-            url: config.get('Slack.incomingWebHook'),
-            text: '{"text":"' + album + '"}'
-        };
+function send (data) {
 
-        spotifyRequest.post(
-            incomingWebHook.url,
-            {
-                method: 'POST',
-                body: incomingWebHook.text
-            },
-            function(error, response) {
-                if (!error && response.statusCode == 200) {
-                    res.send('Have fun!!');
-                }
+    console.log('POST: ' + config.get('Slack.incomingWebHook'));
+    return request({
+        uri: config.get('Slack.incomingWebHook'),
+        method: 'POST',
+        body: '{"text":"' + data + '"}'
+    })
+    .catch(function () {
+      console.log('Couldn\'t post back to slack');
+    });
+}
 
-            }
-        );
-    };
-
-    return {
-        send: send
-    };
-}();
-
+module.exports = {
+    send: send
+};

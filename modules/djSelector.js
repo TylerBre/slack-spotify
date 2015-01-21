@@ -1,14 +1,11 @@
-module.exports = function () {
-    var select = function (albums) {
-        var albumsLength = albums.albums.items.length,
-            index = Math.floor((Math.random() * albumsLength));
 
-        return 'Listen: ' + albums.albums.items[index].external_urls.spotify + ' Name: ' +
-            albums.albums.items[index].name + ' - ' + albums.albums.items[index].images[0].url;
-    };
+function select (data) {
+    var albumsLength = data.albums.items.length;
+    var index = Math.floor((Math.random() * albumsLength));
 
-    return {
-        select: select
-    };
-}();
+    return data.albums.items[index].external_urls.spotify;
+}
 
+module.exports = {
+  select: select
+};
